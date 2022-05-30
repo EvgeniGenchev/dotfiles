@@ -33,7 +33,7 @@ colors:
     white:   '#a89984'
   dim:
     black:   '#32302f'
-    red:     '#9d0006'
+    red :    '#9d0006'
     green:   '#79740e'
     yellow:  '#b57614'
     blue:    '#076678'
@@ -41,20 +41,80 @@ colors:
     cyan:    '#427b58'
     white:   '#928374'
 
-    font:
-       normal:
-               family: "MesloLGSDZ NF"
-               style: Regular
-       bold:
-               family: "MesloLGSDZ NF"
-               style: Bold
-       italic:
-               family: "MesloLGSDZ NF"
-               style: Italic
-       bold_italic:
-               family: "MesloLGSDZ NF"
-               #style: Bold Italic
-       size:   25
+
+# colors
+##### OLD COLOURS 
+#colors:
+#        primary:
+#               background:     '#292f36'
+#              foreground:     '#d0d0d0'
+#       cursor:
+#              background:     '#d0d0d0'
+#              foreground:     '#292f36'
+#
+#       normal:
+#              black:          '#263640'
+#              red:            '#812D17'
+#              green:          '#1E802E'
+#              yellow:         '#FFB143'
+#              blue:           '#557A95'
+#              magenta:        '#696EBF'
+#              cyan:           '#1A9087'
+#              white:          '#DCDFE4'
+#       bright: 
+#              black:          '#4A697D'
+#              red:            '#B16F5E'
+#              green:          '#67BD75'
+#              yellow:         '#FFEF4B'
+#               blue:           '#7395AE'
+#              magenta:        '#8086e8'
+               # magenta:        '#4A49FF'
+#              cyan:           '#75BCB7'
+#               white:          '#FDF6E3'
 
 
-        
+#colors:
+#        primary:
+#                background:     '#282C34'
+#                foreground:     '#DCDFE4'
+#        cursor:
+#                background:     '#DCDFE4'
+#                foreground:     '#282C34'
+#
+#        normal:
+#                black:          '#282C34'
+#                red:            '#E06C75'
+#                green:          '#98C379'
+#                yellow:         '#E5C07B'
+#                blue:           '#61AFEF'
+#                magenta:        '#C678DD'
+#                cyan:           '#56B6C2'
+#                white:          '#DCDFE4'
+#       bright: 
+#               black:          '#5A6374'
+#               red:            '#E06C75'
+#               green:          '#98C379'
+#               yellow:         '#E5C07B'
+#               blue:           '#61AFEF'
+#               magenta:        '#C678DD'
+#               cyan:           '#56B6C2'
+#               white:          '#DCDFE4'
+
+
+font:
+        normal:
+                family: "MesloLGSDZ NF"
+                style: Regular
+        bold:
+                family: "MesloLGSDZ NF"
+                style: Bold
+        italic:
+                family: "MesloLGSDZ NF"
+                style: Italic
+        bold_italic:
+                family: "MesloLGSDZ NF"
+                style: Bold Italic
+        size:   14
+
+
+
