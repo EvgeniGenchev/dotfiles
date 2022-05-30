@@ -1,84 +1,119 @@
 [colors]
-background = #00fff000
+;background =	 #00fff000
 background-alt = #1D252C00
 
-foreground = #00003f 
-foreground-alt = #00003f
-primary = #696EBF
+background = #282828
+
+;foreground = #8086e8
+;foreground-alt = #696ebf
+
+;foreground = 		#e52b50
+;foreground-alt = 	#98971a
+
+foreground = 		#fbf1c7
+foreground-alt = 	#f2e5bc
+
+primary = #81a1c1
 secondary = #88C0D0
 alert = #BF616A
 
-[bar/example1]
-monitor = 
+[bar/bara]
+monitor = DP-0
 width = 100%
 height = 20
+offset-y = -20
 radius = 0
 fixed-center = true
-border-bottom-size = 0
-
 
 background = ${colors.background}
 foreground = ${colors.foreground}
 
 line-size = 0
 
-border-size = 1 
+border-size = 4
 border-color = #00000000
 
 padding-left = 1
 padding-right = 1
 
-module-margin-left = 1
-module-margin-right = 1
+
+module-margin-left = 2
+module-margin-right = 2
 
 font-0 = "JetBrainsMono Nerd Font:size=12:weight=medium;0"
-font-1 = "Iosevka Nerd Font:style=Medium:size=12"
+
+enable-ipc = true
 
 modules-left = i3
-modules-center =
-modules-right = xkeyboard  wlan alsa  battery  date
+modules-center 	= previous playpause spotify next
+modules-right 	= xkeyboard alsa date
 
-tray-position = none
-tray-padding = -2
+tray-position 	= none
+tray-padding 	= 0 
 
 
-cursor-click = pointer
-cursor-scroll = ns-resize
+cursor-click 	= pointer
+cursor-scroll 	= ns-resize
 
 [module/xwindow]
-type = internal/xwindow
-label = %title:0:20:...%
+type 		= internal/xwindow
+label 		= %title:0:30:...%
 
 [module/xkeyboard]
-type = internal/xkeyboard
-blacklist-0 = num lock
-format = <label-layout>
+type 				= internal/xkeyboard
+blacklist-0 			= num lock
+format-prefix-underline 	= ${colors.foreground}
 
-format-prefix-underline = ${colors.foreground}
+[module/playpause]
+type 		= custom/ipc
+format-font 	= 2
+hook-0 		= echo ""
+hook-1 		= echo "+"
+hook-2 		= echo "||"
+click-left 	= "spotifyctl -q playpause"
 
+
+[module/next]
+type 		= custom/ipc
+format-font 	= 2
+hook-0 		= echo ""
+hook-1		= echo ">>"
+click-left 	= "spotifyctl -q next"
+
+[module/previous]
+type 		= custom/ipc
+format-font 	= 2
+hook-0 		= echo ""
+hook-1 		= echo "<<"
+click-left 	= "spotifyctl -q previous"
+
+[module/spotify]
+type 		= custom/ipc
+hook-0 		= echo ""
+hook-1 		= spotifyctl -q status --format '%artist%: %title%'
 
 [module/i3]
-type = internal/i3
-format =<label-state> <label-mode> 
-index-sort = true
+type 		= internal/i3
+format 		= <label-state> <label-mode>
+index-sort 	= true
 wrapping-scroll = false
 
 ;Only show workspaces on the same output as the bar
 ;pin-workspaces = true
 
-label-mode-padding = 1
-label-mode-foreground = #2E3440
-label-mode-background = ${colors.primary}
+label-mode-padding 	= 1
+label-mode-foreground	= #2E3440
+label-mode-background 	= ${colors.primary}
 
 focused = Active workspace on focused monitor
 label-focused = %index%
-label-focused-background = #00fff
-label-focused-foreground = ${colors.foreground}
-label-focused-underline= #00000000
-label-focused-padding = 2
+label-focused-background 	= #00fff
+label-focused-foreground 	= ${colors.foreground}
+label-focused-underline		= #00000000
+label-focused-padding 		= 2
 
-unfocused = Inactive workspace on any monitor
-label-unfocused = %index%
+unfocused 		= Inactive workspace on any monitor
+label-unfocused 	= %index%
 label-unfocused-padding = 2
 
 visible = Active workspace on unfocused monitor
@@ -92,125 +127,57 @@ label-urgent = %index%
 label-urgent-background = ${colors.alert}
 label-urgent-padding = 2
 
-
-[module/wlan]
-type = internal/network
-interface = wlo1
-interval = 3.0
-
-format-connected =   %{A1:nm-connection-editor:}<ramp-signal>%{A}         
-;format-connected-underline = ${colors.foreground}
-
-format-disconnected = ﮙ
-
-ramp-signal-0 = 睊
-ramp-signal-1 = 直
-ramp-signal-2 = 
-ramp-signal-foreground = ${colors.foreground-alt}
-
+[module/cpu]
+type = internal/cpu
+interval = 2
+;format-prefix =
+format-prefix-foreground = ${colors.foreground-alt}
+;format-underline = ${colors.foreground}
+label = %percentage:2%%
 
 [module/date]
 type = internal/date
 interval = 5
 
-date = %Y-%m-%d
-date-alt = " %Y-%m-%d"
+date = %d-%m-%Y
+date-alt = " %d-%m-%Y"
 
 time = %H:%M
 time-alt = %H:%M
 
-format-prefix =  
+format-prefix =
 format-prefix-foreground = ${colors.foreground-alt}
 
-label =    %date% %time%
+label = %date% %time%
+
 
 [module/alsa]
-type = internal/alsa
+type = internal/pulseaudio
 
-master-soundcard = default
-speaker-soundcard = default
-headphone-soundcard = default
-
-format-volume =  <ramp-volume>    <bar-volume>  
+format-volume = <label-volume> <bar-volume>
+label-volume = vol
 label-volume-foreground = ${root.foreground}
 
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 墳
-ramp-volume-3 = 
+format-muted-prefix = "X "
+format-muted-foreground = ${root.foreground}
+label-muted = X
 
-format-muted-foreground = #8b0000
-label-muted =  婢    
-
-bar-volume-width = 8
-bar-volume-foreground-0 = #00003f
-bar-volume-foreground-1 = #00003f
-bar-volume-foreground-2 = #00003f
-bar-volume-foreground-3 = #00003f
-bar-volume-foreground-4 = #00003f
-bar-volume-foreground-5 = #00003f
-bar-volume-foreground-6 = #00003f
+bar-volume-width = 10
+bar-volume-foreground-0 = #98971a
+bar-volume-foreground-1 = #98971a
+bar-volume-foreground-2 = #98971a
+bar-volume-foreground-3 = #98971a
+bar-volume-foreground-4 = #98971a
+bar-volume-foreground-5 = #98971a
+bar-volume-foreground-6 = #98971a
 bar-volume-gradient = false
 bar-volume-indicator = |
 bar-volume-indicator-font = 2
-bar-volume-fill = —
+bar-volume-fill = -
 bar-volume-fill-font = 2
-bar-volume-empty = —
+bar-volume-empty = -
 bar-volume-empty-font = 2
-bar-volume-empty-foreground = #0000be
-
-
-[module/battery]
-type = internal/battery
-battery = BAT0
-adapter = AC0
-full-at = 98
-interval = 2.0
-
-
-format-charging = <animation-charging> <label-charging> 
-format-charging-underline = #002E3440
-format-charging-foreground = ${colors.foreground-alt}
-
-format-discharging = <ramp-capacity>  <label-discharging>  
-format-discharging-underline = ${self.format-charging-underline}
-format-discharging-foreground = ${colors.foreground-alt}
-
-format-full-prefix = "  "
-format-full-prefix-foreground = ${colors.foreground}
-format-full-underline = #002E3440
-format-full-foreground = ${colors.foreground}
-
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
-
-animation-charging-0 =  
-animation-charging-1 =  
-animation-charging-2 = 
-animation-charging-3 =  
-animation-charging-4 = 
-
-animation-charging-foreground = ${colors.foreground-alt}
-animation-charging-framerate = 750
-
-[module/backlight]
-
-type = internal/backlight
-
-card = intel_backlight
-enable-scroll = true
-
-format = <ramp>   
-
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-ramp-3 = 
-ramp-4 = 
-ramp-5 = 
+bar-volume-empty-foreground = ${colors.foreground-alt}
 
 [settings]
 screenchange-reload = true
@@ -218,6 +185,4 @@ screenchange-reload = true
 
 [global/wm]
 margin-top = 0
-margin-bottom = 0 
-
-
+margin-bottom =
