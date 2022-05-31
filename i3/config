@@ -183,7 +183,7 @@ bindsym $mod+r mode "resize"
 bar {
 	mode invisible
 	position top
-#       status_command i3status
+   #status_command i3status
 }
 
 #open brave
