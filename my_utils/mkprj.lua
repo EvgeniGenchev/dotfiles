@@ -15,7 +15,8 @@ local supportedProjects = {
 ["pentest"] = 1, ["python"] = 2,
 ["c"] = 3, ["c++"] = 4,
 ["fast_api"] = 5, ["lua"] = 6,
-["playdate"] = 7
+["playdate"] = 7, ["fastapi"] = 8,
+["fastapi-web"] = 9
 }
 
 function NoProjectNameException()
@@ -167,6 +168,24 @@ local function _lua(projectName, licenseName)
 	os.execute("touch " .. projectName .. "/src/main.lua")
 end
 
+local function _fastapi(projectName)
+	os.execute("mkdir -p " .. projectName .. "/static")
+	os.execute("mkdir -p " .. projectName .. "/static/css")
+	os.execute("mkdir -p " .. projectName .. "/static/images")
+	os.execute("mkdir -p " .. projectName .. "/static/js")
+	os.execute("touch " .. projectName .. "/static/index.html")
+	os.execute("touch " .. projectName .. "/main.py")
+	os.execute([[echo "<!DOCTYPE html>
+	<html>
+		<head>
+			<title>Page Title</title>
+		</head>
+		<body>
+			<p>Hello World</p>
+		</body>
+		</html>" >> ]] .. projectName .. "/static/index.html")
+end
+
 local function c(projectName, licenseName) end
 local function fast_api(projectName, licenseName) end
 
@@ -183,4 +202,6 @@ elseif index==3 then c(p_name, l_type)
 elseif index==4 then cpp(p_name, l_type)
 elseif index==5 then fast_api(p_name, l_type)
 elseif index==6 then _lua(p_name, l_type)
-elseif index==7 then playdate(p_name) end
+elseif index==7 then playdate(p_name)
+elseif index==9 then _fastapi(p_name)
+end

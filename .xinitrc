@@ -6,8 +6,6 @@ bash ~/.screenlayout/dual-s-conf.sh &
 
 nitrogen --restore &
 
-nvidia-settings --assign CurrentMetaMode="HDMI-0: nvidia-auto-select +1080+420 {ForceCompositionPipeline=On}, DP-0: nvidia-auto-select +0+0 {ForceCompositionPipeline=On, Rotation=270}" &
-
 flameshot &
 
 dunst &

@@ -15,7 +15,7 @@ o.dir = '.,,**'
 o.clipboard = "unnamedplus"
 
 --------------python-syntax------------------------
-run("let g:python_highlight_buildins=1")
+run("let g:python_highlight_all=1")
 run("let g:python_highlight_func_calls=1")
 run("let g:python_highlight_string_format=1")
 run("let g:python_highlight_indent_errors=1")
@@ -36,8 +36,9 @@ run("let NERDTreeShowHidden=1")
 -----------vim-plug---------------------------------
 local Plug = vim.fn['plug#']
 
-vim.call('plug#begin', '~/local/share/nvim/plugged')
+vim.call('plug#begin', '~/.local/share/nvim/plugged')
 
+Plug 'wgwoods/vim-systemd-syntax'
 Plug 'ap/vim-css-color'
 Plug 'amadeus/vim-css'
 Plug 'alvan/vim-closetag'
@@ -50,6 +51,9 @@ Plug 'tami5/lspsaga.nvim'
 Plug 'preservim/nerdtree'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'wilriker/gcode.vim'
+Plug 'chrisbra/csv.vim'
+Plug 'vim-python/python-syntax'
 
 vim.call('plug#end')
 -----------end-vim-plug-----------------------------
@@ -57,7 +61,7 @@ vim.call('plug#end')
 
 -----------lspconfig--------------------------------
 
-require'lspconfig'.pyright.setup{}
+require'lspconfig'.pyright.setup{ignore={"**/.config/qutebrowser/config.py"},}
 require'lspconfig'.sumneko_lua.setup{settings={Lua={diagnostics={globals={'vim'},}}}}
 require'lspconfig'.ccls.setup{}
 require'lspconfig'.bashls.setup{}

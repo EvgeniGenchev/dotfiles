@@ -3,6 +3,7 @@ import sys
 from tabulate import tabulate as table
 from datetime import datetime
 
+
 class colours:
     cyan   = '\033[96m'
     purple = '\033[95m'
@@ -11,7 +12,15 @@ class colours:
     yellow = '\033[93m'
     red    = '\033[91m'
     reset  = '\033[0m'
-    l_gray = '\033[90m' 
+    l_gray = '\033[90m'
+
+def sizeof_fmt(num, suffix='B'):
+    num = int(num)
+    for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
+        if abs(num) < 1000.0:
+            return f"{num:3.1f}{unit}{suffix}"
+        num /= 1000.0
+    return f"{num:.1f}Y{suffix}"
 
 def get_time(f):
     tm = os.stat(f).st_mtime
@@ -21,7 +30,7 @@ def get_time(f):
     return colours.blue + dt + colours.reset
 
 def get_size(f):
-    return colours.yellow + str(os.stat(f).st_size) + colours.reset
+    return colours.yellow + str(sizeof_fmt(os.stat(f).st_size)) + colours.reset
 
 args = sys.argv
 width = 0
@@ -51,7 +60,7 @@ dir_files = [[f, get_time(f), get_size(f)] for f in files]
 i = 0
 
 for f in dir_files:
-    
+
     fs = f[0].split('.')
     curr_dir_file = fs[0]
     chg_flag = 0

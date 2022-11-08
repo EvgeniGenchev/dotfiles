@@ -1,0 +1,21 @@
+#!/bin/sh
+
+FILE=req.txt
+
+
+if test ! -d "env"; then
+	python -m venv env
+fi
+
+source env/bin/activate
+
+if python -c "tabulate" &> /dev/null; then
+	echo "tabulate already installed"
+else
+	pip install tabulate
+fi
+
+if test -f "$FILE"; then
+	pip install -r $FILE
+fi
+

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+scan_net() {
+		for ip in `seq 1 254`; do
+			ping -c 1 -w 1 $1.$ip | grep "64 bytes" | cut -d " " -f 4 | tr -d ":" &
+		done; wait
+}
+
+if [ "$1" == "" ]
+then
+	ip_addr=$(ip -brief addr | grep -E -o "192.168.[0-9]{1,3}")
+else
+	ip_addr=$1
+fi
+
+ips=$(scan_net "$ip_addr")
+echo "$ips" | ~/my_utils/hawk
