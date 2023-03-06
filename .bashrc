@@ -35,8 +35,6 @@ alias hawk="~/my_utils/hawk"
 alias iphawk="~/my_utils/ipswp"
 alias actv='~/my_utils/actv'
 
-
-
 export EDITOR='nvim'
 export VISUAL='nvim'
 

@@ -13,13 +13,10 @@ w.relativenumber = true
 o.encoding = 'utf-8'
 o.dir = '.,,**'
 o.clipboard = "unnamedplus"
+set.termguicolors = true
 
 --------------python-syntax------------------------
-run("let g:python_highlight_all=1")
-run("let g:python_highlight_func_calls=1")
-run("let g:python_highlight_string_format=1")
-run("let g:python_highlight_indent_errors=1")
-run("let g:python_highlight_exceptions=1")
+run("let g:python_highlight_all=0")
 ----------end-python-syntax------------------------
 
 --------------lightline----------------------------
@@ -54,6 +51,11 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'wilriker/gcode.vim'
 Plug 'chrisbra/csv.vim'
 Plug 'vim-python/python-syntax'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'glepnir/zephyr-nvim'
+Plug 'EvgeniGenchev/smokinq-nvim'
+Plug 'ap/vim-css-color'
 
 vim.call('plug#end')
 -----------end-vim-plug-----------------------------
@@ -62,11 +64,27 @@ vim.call('plug#end')
 -----------lspconfig--------------------------------
 
 require'lspconfig'.pyright.setup{ignore={"**/.config/qutebrowser/config.py"},}
-require'lspconfig'.sumneko_lua.setup{settings={Lua={diagnostics={globals={'vim'},}}}}
+--require'lspconfig'.sumneko_lua.setup{}
 require'lspconfig'.ccls.setup{}
 require'lspconfig'.bashls.setup{}
 
 -------end-lspconfig--------------------------------
+
+
+---------treesitter--------------------------------
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+-------end-treesitter------------------------------
+
+
 
 -------lspsaga--------------------------------------
 
@@ -75,6 +93,8 @@ local saga = require'lspsaga'
 saga.init_lsp_saga {
 	border_style = "round",
 }
+-- sets the background of the diagnostic windows 
+run("hi LspFloatWinNormal guibg=#272727")
 
 local smap = vim.api.nvim_buf_set_keymap
 smap(0, "n", "K",  ":Lspsaga hover_doc<cr>", {silent = true, noremap = true})
@@ -112,3 +132,4 @@ map('mn', ':NERDTree<CR>')
 ---end-nerd-tree-----
 
 --------end-key-mapping-----------------------------
+require('smokinq')

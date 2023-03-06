@@ -41,7 +41,7 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty -o font.size=10
+bindsym $mod+Return exec alacritty -o font.size=9
 
 
 # kill focused window
@@ -182,7 +182,8 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
 	position top
-    status_command i3status
+    #status_command ~/.config/i3status/i3script.sh
+    status_command ~/workspace/hobby/i3genabar/i3genabar
 	font pango:MesloLGSDZ Mono 16
 	colors {
 		background #282828
