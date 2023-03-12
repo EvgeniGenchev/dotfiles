@@ -1,6 +1,6 @@
 local w = vim.wo
 local o = vim.o
---local b = vim.bo
+-- local b = vim.bo
 local set = vim.opt
 local run = vim.cmd
 
@@ -14,6 +14,7 @@ o.encoding = 'utf-8'
 o.dir = '.,,**'
 o.clipboard = "unnamedplus"
 set.termguicolors = true
+set.scrolloff = 5
 
 --------------lightline----------------------------
 
@@ -50,6 +51,7 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'glepnir/zephyr-nvim'
 Plug 'EvgeniGenchev/smokinq-nvim'
+Plug 'EvgeniGenchev/comment-nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'nvim-tree/nvim-web-devicons'
 Plug 'goolord/alpha-nvim'
@@ -88,8 +90,6 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 -------end-treesitter------------------------------
-
-
 
 -------lspsaga--------------------------------------
 
@@ -135,5 +135,6 @@ map('mn', ':NERDTree<CR>')
 
 --------end-key-mapping-----------------------------
 require('smokinq')
+require('comment').setup()
 require('colorizer').setup()
 require'alpha'.setup(require'alpha.themes.startify'.config)
