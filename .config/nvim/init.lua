@@ -15,10 +15,6 @@ o.dir = '.,,**'
 o.clipboard = "unnamedplus"
 set.termguicolors = true
 
---------------python-syntax------------------------
-run("let g:python_highlight_all=0")
-----------end-python-syntax------------------------
-
 --------------lightline----------------------------
 
 run("let lightline={'colorscheme' : 'jellybeans',}")
@@ -50,12 +46,13 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'wilriker/gcode.vim'
 Plug 'chrisbra/csv.vim'
-Plug 'vim-python/python-syntax'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'glepnir/zephyr-nvim'
 Plug 'EvgeniGenchev/smokinq-nvim'
-Plug 'ap/vim-css-color'
+Plug 'norcalli/nvim-colorizer.lua'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'goolord/alpha-nvim'
 
 vim.call('plug#end')
 -----------end-vim-plug-----------------------------
@@ -64,7 +61,15 @@ vim.call('plug#end')
 -----------lspconfig--------------------------------
 
 require'lspconfig'.pyright.setup{ignore={"**/.config/qutebrowser/config.py"},}
---require'lspconfig'.sumneko_lua.setup{}
+require'lspconfig'.nimls.setup{}
+require'lspconfig'.lua_ls.setup{
+	settings = {
+		Lua = {
+			diagnostics = {globals = {'vim'},},
+			telemetry = {enable = false,},
+		},
+	},
+}
 require'lspconfig'.ccls.setup{}
 require'lspconfig'.bashls.setup{}
 
@@ -106,10 +111,7 @@ smap(0, "n", "gx", "<cmd>Lspsaga code_action<cr>", {silent = true, noremap = tru
 ---end-lspsaga--------------------------------------
 
 
-
-
 ------------key-mapping-----------------------------
-
 local function  map(st, cmd)
 	vim.api.nvim_set_keymap('n', st, cmd, { noremap = true, silent = true })
 end
@@ -133,3 +135,5 @@ map('mn', ':NERDTree<CR>')
 
 --------end-key-mapping-----------------------------
 require('smokinq')
+require('colorizer').setup()
+require'alpha'.setup(require'alpha.themes.startify'.config)
