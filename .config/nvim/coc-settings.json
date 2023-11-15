@@ -1,0 +1,43 @@
+{
+	"languageserver": {
+		"zig": {
+			"command": "zls",
+			"filetypes": ["zig"]
+		},
+		"lua": {
+			"command": "lua-language-server",
+			"filetypes": ["lua"],
+			"settings": {
+				"Lua": {
+					"diagnostics" : {"globals" : ["vim"]}
+				}
+			}
+		},
+		"ccls": {
+			"command": "ccls",
+			"filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
+			"rootPatterns": [".ccls", "compile_commands.json", ".git/", ".hg/"],
+			"initializationOptions": {
+				"cache": {
+				  "directory": "/tmp/ccls"
+				}
+			}
+		},
+		"nim": {
+			"command": "nimlsp",
+			"filetypes": ["nim"]
+		  },
+		"bash": {
+			"command": "bash-language-server",
+			"args": ["start"],
+			"filetypes": ["sh"]
+		  },
+		"arduino":{ 
+			"command":"arduino-language-server",
+			"rootPatterns":["*.ino"],
+			"filetypes":["arduino"],
+			"args":["-cli", "/path/to/arduino-cli", "-clangd", "/path/to/clangd", "-cli-config", "/path/to/arduino-cli.yaml"]
+		}
+
+	}
+}
