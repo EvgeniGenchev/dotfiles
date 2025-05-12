@@ -5,8 +5,6 @@ local o = vim.o
 local set = vim.opt
 local run = vim.cmd
 
-set.foldmethod = "expr"
-set.foldexpr = "nvim_treesitter#foldexpr()"
 set.tabstop = 4
 set.softtabstop = 4
 set.shiftwidth = 4
@@ -16,6 +14,7 @@ w.relativenumber = true
 o.encoding = 'utf-8'
 o.dir = '.,,**'
 o.clipboard = "unnamedplus"
+o.mouse = ''
 set.termguicolors = true
 set.scrolloff = 5
 vim.cmd('set colorcolumn=100')
@@ -30,12 +29,12 @@ run("let lightline={'colorscheme' : 'jellybeans',}")
 run("let NERDTreeShowHidden=1")
 -----------end-nerd-tree----------------------------
 
-
 -----------vim-plug---------------------------------
 local Plug = vim.fn['plug#']
 
 vim.call('plug#begin', '~/.local/share/nvim/plugged')
 
+Plug 'github/copilot.vim'
 Plug 'wgwoods/vim-systemd-syntax'
 Plug 'ap/vim-css-color'
 Plug 'amadeus/vim-css'
@@ -59,6 +58,7 @@ Plug 'goolord/alpha-nvim'
 Plug 'zah/nim.vim'
 Plug 'iamcco/markdown-preview.nvim'
 Plug 'neoclide/coc.nvim'
+Plug 'ThePrimeagen/vim-be-good'
 
 vim.call('plug#end')
 -----------end-vim-plug-----------------------------
@@ -68,87 +68,14 @@ vim.call('plug#end')
 
 require"ibl".setup()
 
------------lspconfig--------------------------------
-
--- require'lspconfig'.pyright.setup{ignore={"**/.config/qutebrowser/config.py"},}
--- require'lspconfig'.nimls.setup{}
--- require'lspconfig'.lua_ls.setup{
-	-- settings = {
-		-- Lua = {
-			-- diagnostics = {globals = {'vim'},},
-			-- telemetry = {enable = false,},
-		-- },
-	-- },
--- }
--- require'lspconfig'.ccls.setup{}
--- require'lspconfig'.bashls.setup{}
--- require'lspconfig'.zls.setup{}
-
-
--------end-lspconfig--------------------------------
-
 ---------treesitter--------------------------------
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
 }
-
-vim.api.nvim_create_autocmd({"BufRead", "BufWinEnter"}, {
-    pattern = "*", -- This pattern applies to all files
-    command = "normal! zR"
-})
-
--- vocal api = vim.api
--- local M = {}
--- function to create a list of commands and convert them to autocommands
------ This function is taken from https://github.com/norcalli/nvim_utils
--- function M.nvim_create_augroups(definitions)
-    -- for group_name, definition in pairs(definitions) do
-        -- api.nvim_command('augroup '..group_name)
-        -- api.nvim_command('autocmd!')
-        -- for _, def in ipairs(definition) do
-            -- local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
-            -- api.nvim_command(command)
-        -- end
-        -- api.nvim_command('augroup END')
-    -- end
--- end
--- 
--- 
--- local autoCommands = {
-    -- other autocommands
-    -- open_folds = {
-        -- {"BufReadPost,FileReadPost", "*", "normal zR"}
-    -- }
--- }
--- 
--- M.nvim_create_augroups(autoCommands)
 -------end-treesitter------------------------------
-
--------lspsaga--------------------------------------
--- 
--- local saga = require'lspsaga'
--- 
--- saga.init_lsp_saga {
-	-- border_style = "round",
--- }
--- sets the background of the diagnostic windows
--- run("hi LspFloatWinNormal guibg=#272727")
--- 
--- local smap = vim.api.nvim_buf_set_keymap
--- smap(0, "n", "K",  ":Lspsaga hover_doc<cr>", {silent = true, noremap = true})
--- smap(0, "n", "go", "<cmd>Lspsaga show_line_diagnostics<cr>", {silent = true, noremap = true})
--- smap(0, "n", "gj", "<cmd>Lspsaga diagnostic_jump_next<cr>", {silent = true, noremap = true})
--- smap(0, "n", "gk", "<cmd>Lspsaga diagnostic_jump_prev<cr>", {silent = true, noremap = true})
--- smap(0, "n", "gx", "<cmd>Lspsaga code_action<cr>", {silent = true, noremap = true})
--- map(0, "n", "gs", "<cmd>Lspsaga signiture_help<cr>", {silent = true, noremap = true})
----end-lspsaga--------------------------------------
 
 -------coc--------------------------------------
 set.backup = false
@@ -204,6 +131,7 @@ map('tm', ':Telescope find_files<CR>')
 ------splits-------------
 map('mm', ':wincmd w<CR>')
 map('mk', ':vsp<CR>')
+map('mh', ':sp<CR>')
 ------end-splits---------
 
 ---------tabs---------
@@ -216,14 +144,46 @@ map('tk',':tabn<CR>')
 map('mn', ':NERDTree<CR>')
 ---end-nerd-tree-----
 
+
 --------end-key-mapping-----------------------------
 require('smokinq')
+
 require('comment').setup({
 	languages = {
 		sh = "#",
 		nim = "#",
 		zig = "//",
+		conf = "#",
+		dockerfile = "#",
+		rust = "//",
+		go = "//",
 	},
 })
+
 require('colorizer').setup()
+
 require'alpha'.setup(require'alpha.themes.startify'.config)
+-- require('copilot.vim').setup()
+
+-----------cursor-tree--------------------------------
+vim.opt.cursorline = true
+vim.cmd[[ highlight CursorLine guibg=#30302c ]]
+
+
+-- Disable cursor line in insert mode
+vim.cmd([[
+augroup CursorLineToggle
+  autocmd!
+  autocmd InsertEnter * set nocursorline
+  autocmd InsertLeave * set cursorline
+augroup END
+]])
+-----------end-cursor-tree----------------------------
+vim.opt.rtp:append("~/.config/nvim/Howto-nvim")
+require('howto').setup()
+
+function Transparent()
+  vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+  vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+end
+Transparent()

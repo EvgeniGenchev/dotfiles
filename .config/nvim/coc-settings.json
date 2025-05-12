@@ -39,5 +39,6 @@
 			"args":["-cli", "/path/to/arduino-cli", "-clangd", "/path/to/clangd", "-cli-config", "/path/to/arduino-cli.yaml"]
 		}
 
-	}
+  },
+  "zig.zls.path": "/usr/bin/zls"
 }
