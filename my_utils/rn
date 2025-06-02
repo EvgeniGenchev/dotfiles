@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Check if run.sh exists
+if [[ -f ./run.sh ]]; then
+    # Make it executable if it isn't
+    if [[ ! -x ./run.sh ]]; then
+        chmod +x ./run.sh
+    fi
+    ./run.sh "$@"
+else
+    echo "run.sh not found"
+    exit 1
+fi

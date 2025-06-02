@@ -1,0 +1,60 @@
+#!/bin/python
+import os
+import argparse
+import sqlite3
+from prettytable.colortable import ColorTable, Themes
+
+def get_tables(db_path):
+    con = sqlite3.connect(db_path)
+    cur = con.cursor()
+    res = cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    return res.fetchall(), cur
+
+def print_tables(db_path, columns):
+
+    table = ColorTable(theme=Themes.LAVENDER)
+    table.field_names = columns if columns else ["Table Names"]
+    for r in get_tables(db_path)[0]:       
+        table.add_row(r)
+
+    print(table)
+
+
+def print_specific_table(db_path: str, table_name:str, columns: list = []):
+    table_names, cur = get_tables(db_path)
+
+    if not table_names:
+        print("No tables found in the database.")
+        return
+
+    cols = '*' if not columns else ', '.join(columns)
+
+    try:
+        res = cur.execute(f"SELECT {cols} FROM {table_name} LIMIT 5;")
+    except sqlite3.OperationalError as e:
+        print(f"Error querying table: {e}")
+        return
+
+
+    table = ColorTable(theme=Themes.LAVENDER)
+    table.field_names = [desc[0] for desc in res.description]
+    for row in res.fetchall():
+        table.add_row(row)
+
+    print(table)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="SQLite DB Inspector")
+    parser.add_argument('db_path', help="Path of the database")
+    parser.add_argument('target', help="Action to perform")
+    parser.add_argument('-c', '--columns', nargs='+', help="List of column names to use as table headers")
+    args = parser.parse_args()
+
+    match args.target:
+        case "tables":
+            print_tables(args.db_path, args.columns)
+        case _:
+            if os.path.exists(args.db_path): 
+                print_specific_table(args.db_path, args.target, args.columns)
+            else:
+                print(f"\033[91mError: {args.db_path} is not a valid path\033[0m")

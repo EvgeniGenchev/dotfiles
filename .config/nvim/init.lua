@@ -179,8 +179,6 @@ augroup CursorLineToggle
 augroup END
 ]])
 -----------end-cursor-tree----------------------------
-vim.opt.rtp:append("~/.config/nvim/Howto-nvim")
-require('howto').setup()
 
 function Transparent()
   vim.api.nvim_set_hl(0, "Normal", { bg = "none" })

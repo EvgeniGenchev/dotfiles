@@ -1,0 +1,20 @@
+#!/bin/bash
+
+SELECTION=$(slurp)
+
+if [ -z "$SELECTION" ]; then
+  echo "Selection was canceled."
+  exit 1
+fi
+
+FILENAME="screenshot_$(date +%Y-%m-%d_%H-%M-%S).png"
+
+SAVE_FOLDER=$(zenity --file-selection --directory --title="Choose a folder to save the screenshot")
+
+if [ -z "$SAVE_FOLDER" ]; then
+  echo "Folder selection was canceled."
+  exit 1
+fi
+sleep 1
+
+grim -g "$SELECTION" "$SAVE_FOLDER/$FILENAME"

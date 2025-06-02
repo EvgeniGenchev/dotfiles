@@ -1,6 +1,0 @@
-#!/bin/sh
-
-cd ~
-cd workspace/work/3DPrinterPantheon
-source env/bin/activate
-cd src

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Select an area
+SELECTION=$(slurp)
+
+# Check if selection was canceled
+if [ -z "$SELECTION" ]; then
+  echo "Selection was canceled."
+  exit 1
+fi
+
+# Take screenshot of selected area and copy to clipboard
+grim -g "$SELECTION" - | wl-copy --type image/png
+
+echo "Screenshot copied to clipboard."

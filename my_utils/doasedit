@@ -1,0 +1,49 @@
+#!/bin/zsh
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <file_path>"
+    exit 1
+fi
+
+FILE_PATH=$1
+
+# Check if the file exists
+if [ ! -f "$FILE_PATH" ]; then
+    echo "Error: File not found."
+    exit 1
+fi
+
+# Extract the name of the file
+FILE_NAME=$(basename "$FILE_PATH")
+
+# Create a temporary file with the same name in /var/tmp/
+TEMP_FILE="/var/tmp/$FILE_NAME"
+
+# Get the original file's permissions, group, and owner
+ORIGINAL_PERMISSIONS=$(stat -c "%a" "$FILE_PATH")
+ORIGINAL_GROUP=$(stat -c "%G" "$FILE_PATH")
+ORIGINAL_OWNER=$(stat -c "%U" "$FILE_PATH")
+
+# Copy the original file to the temporary file
+cp "$FILE_PATH" "$TEMP_FILE"
+
+# Open the temporary file with the system's default editor
+${EDITOR:-vi} "$TEMP_FILE"
+
+if cmp -s "$FILE_PATH" "$TEMP_FILE"; then
+    echo "No changes were made. Skipping the move and restore steps."
+	rm "$TEMP_FILE"
+    exit 0
+fi
+
+# NOTE: you need to have doas set to persist 
+
+# Move the temporary file back to its original path
+doas mv "$TEMP_FILE" "$FILE_PATH" || rm -rf "$TEMP_FILE"; exit 13;
+
+
+# Restore the original file's permissions, group, and owner
+doas chmod "$ORIGINAL_PERMISSIONS" "$FILE_PATH"
+doas chown "$ORIGINAL_OWNER:$ORIGINAL_GROUP" "$FILE_PATH"
+
+echo "File edited and saved successfully."

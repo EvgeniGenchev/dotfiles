@@ -1,0 +1,42 @@
+#!/bin/sh
+## List of my aliases
+
+alias nvim_edit="nvim /home/gena/.config/nvim/init.lua"
+
+alias zsh_edit="nvim /home/gena/.config/zsh/.zshrc"
+alias zsh_reload="source /home/gena/.config/zsh/.zshrc;
+					source /home/gena/.config/zsh/.zprofile"
+
+alias zprof_edit="nvim /home/gena/.config/zsh/.zprofile"
+alias alias_edit="nvim /home/gena/.config/aliasrc"
+alias hypr_edit="nvim /home/gena/.config/hypr/hyprland.conf"
+alias bar_edit="nvim /home/gena/.config/waybar/config.jsonc"
+alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+
+alias ls="eza"
+alias la="eza -A"
+alias ll="eza -alF"
+alias l="eza -CF"
+
+alias tree="exa --tree --level=2"
+alias trea="tree -a"
+
+alias cat="bat -pP"
+
+alias s="doas"
+alias p="paru"
+alias vi="nvim"
+alias up="uv pip"
+alias upi="uv pip install"
+
+alias py="python"
+alias e="/home/gena/.scripts/e"
+alias doasedit="/home/gena/.scripts/doasedit"
+alias a="source env/bin/activate"
+alias d="deactivate"
+alias sql_head="/home/gena/.scripts/sql_head"
+
+alias cpy='xargs echo -n | wl-copy'
+alias run="./run.sh"
+alias f="yazi"
+alias sc='/home/gena/.scripts/screencopy'

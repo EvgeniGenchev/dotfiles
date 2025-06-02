@@ -1,0 +1,16 @@
+#!/bin/sh
+
+TMP_DIR="/tmp/test"
+mkdir -p "$TMP_DIR"
+
+SESSION="test_sesh"
+tmux new-session -d -s $SESSION
+
+tmux send-keys -t $SESSION "cd $TMP_DIR" C-m
+tmux send-keys -t $SESSION "virtualenv env" C-m
+tmux send-keys -t $SESSION "source env/bin/activate" C-m
+tmux send-keys -t $SESSION "clear" C-m
+
+tmux attach-session -t $SESSION
+
+echo "fin"
