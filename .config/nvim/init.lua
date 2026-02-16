@@ -17,7 +17,7 @@ o.clipboard = "unnamedplus"
 o.mouse = ''
 set.termguicolors = true
 set.scrolloff = 5
-vim.cmd('set colorcolumn=100')
+vim.cmd('set colorcolumn=80')
 
 --------------lightline----------------------------
 
@@ -34,7 +34,9 @@ local Plug = vim.fn['plug#']
 
 vim.call('plug#begin', '~/.local/share/nvim/plugged')
 
-Plug 'github/copilot.vim'
+-- Plug 'github/copilot.vim'
+Plug 'numToStr/FTerm.nvim'
+Plug 'smoka7/hop.nvim'
 Plug 'wgwoods/vim-systemd-syntax'
 Plug 'ap/vim-css-color'
 Plug 'amadeus/vim-css'
@@ -59,14 +61,12 @@ Plug 'zah/nim.vim'
 Plug 'iamcco/markdown-preview.nvim'
 Plug 'neoclide/coc.nvim'
 Plug 'ThePrimeagen/vim-be-good'
+Plug 'lervag/vimtex'
 
 vim.call('plug#end')
 -----------end-vim-plug-----------------------------
 
--- Plug 'neovim/nvim-lspconfig'
--- Plug 'tami5/lspsaga.nvim'
-
-require"ibl".setup()
+require("ibl").setup {}
 
 ---------treesitter--------------------------------
 require'nvim-treesitter.configs'.setup {
@@ -75,6 +75,7 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
+
 -------end-treesitter------------------------------
 
 -------coc--------------------------------------
@@ -122,8 +123,12 @@ keyset("n", "<M>rn", "<Plug>(coc-rename)", {silent = true})
 
 
 ------------key-mapping-----------------------------
-local function  map(st, cmd)
-	vim.api.nvim_set_keymap('n', st, cmd, { noremap = true, silent = true })
+local function map(lhs, rhs)
+  if type(rhs) == "function" then
+    vim.keymap.set("n", lhs, rhs, { noremap = true, silent = true })
+  else
+    vim.api.nvim_set_keymap("n", lhs, rhs, { noremap = true, silent = true })
+  end
 end
 
 map('tm', ':Telescope find_files<CR>')
@@ -132,6 +137,8 @@ map('tm', ':Telescope find_files<CR>')
 map('mm', ':wincmd w<CR>')
 map('mk', ':vsp<CR>')
 map('mh', ':sp<CR>')
+map('Mk', ':vnew<CR>')
+map('Mh', ':new<CR>')
 ------end-splits---------
 
 ---------tabs---------
@@ -144,6 +151,13 @@ map('tk',':tabn<CR>')
 map('mn', ':NERDTree<CR>')
 ---end-nerd-tree-----
 
+local function run_all()
+	vim.cmd('vsp')
+	vim.cmd('wincmd w')
+	vim.cmd('Telescope find_files')
+end
+
+map('Tm',run_all)
 
 --------end-key-mapping-----------------------------
 require('smokinq')
@@ -151,12 +165,15 @@ require('smokinq')
 require('comment').setup({
 	languages = {
 		sh = "#",
+		zsh = "#",
+		bash = "#",
 		nim = "#",
 		zig = "//",
 		conf = "#",
 		dockerfile = "#",
 		rust = "//",
 		go = "//",
+		hyprlang = "#",
 	},
 })
 
@@ -185,3 +202,58 @@ function Transparent()
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 end
 Transparent()
+
+vim.api.nvim_create_user_command("TodoHints", function()
+  require("todo_hint").add_todo_hints()
+end, {})
+
+vim.api.nvim_set_hl(0, "TodoHintLabel", {
+  fg = "#ffffff",  -- white text
+  bg = "#5f00af",  -- purple background
+  bold = true,
+})
+
+-----------hop-nvim--------------------------------
+
+require('hop').setup({
+	keys = 'fjdkslaewruio'
+	}
+)
+
+vim.api.nvim_set_hl(0, "HopNextKey" , {fg = "#fabd2f"})
+vim.api.nvim_set_hl(0, "HopNextKey1", {fg = "#61c1d3"})
+vim.api.nvim_set_hl(0, "HopNextKey2", {fg = "#076678"})
+
+map('F',':HopWord<CR>')
+
+
+-----------vimtex--------------------------------
+
+-- vim.g.vimtex_view_method = 'sioyek'
+-- vim.g.vimtex_view_sioyek_exe = '/sbin/sioyek'
+-- vim.g.vimtex_view_sioyek_options = '--reuse-window'
+-- 
+-- vim.g.vimtex_compiler_latexmk = {
+--   options = {
+--     "-interaction=nonstopmode",
+--     "-file-line-error",
+--     "-halt-on-error",
+--     "-silent", -- suppress most warnings
+--   },
+-- }
+-- 
+-- vim.keymap.set('n', '<leader>ll', '<cmd>VimtexCompile<CR>', { desc = "VimTeX Compile" })
+-- vim.keymap.set('n', '<leader>lv', '<cmd>VimtexView<CR>', { desc = "VimTeX View" })
+-- 
+
+-----------Fterm--------------------------------
+
+require'FTerm'.setup({
+    border = 'double',
+    dimensions  = {
+        height = 0.9,
+        width = 0.9,
+    },
+})
+
+map('TT', '<cmd>lua require("FTerm").toggle()<CR>')
