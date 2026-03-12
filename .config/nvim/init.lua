@@ -17,6 +17,7 @@ o.clipboard = "unnamedplus"
 o.mouse = ''
 set.termguicolors = true
 set.scrolloff = 5
+
 vim.cmd('set colorcolumn=80')
 
 --------------lightline----------------------------
@@ -34,7 +35,7 @@ local Plug = vim.fn['plug#']
 
 vim.call('plug#begin', '~/.local/share/nvim/plugged')
 
--- Plug 'github/copilot.vim'
+Plug 'stevearc/conform.nvim'
 Plug 'numToStr/FTerm.nvim'
 Plug 'smoka7/hop.nvim'
 Plug 'wgwoods/vim-systemd-syntax'
@@ -68,13 +69,62 @@ vim.call('plug#end')
 
 require("ibl").setup {}
 
----------treesitter--------------------------------
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
+
+---------Prettier--------------------------------
+require("conform").setup({
+  formatters_by_ft = {
+    javascript = { "prettier", stop_after_first = true },
+    typescript = { "prettier", stop_after_first = true },
+    javascriptreact = { "prettier" },
+    typescriptreact = { "prettier" },
+    css = { "prettier" },
+    html = { "prettier" },
+    json = { "prettier" },
+    yaml = { "prettier" },
+	python = { "black" },
+    markdown = { "prettier" },
   },
-}
+})
+
+vim.api.nvim_create_user_command("Pretty", function()
+  require("conform").format({ async = true })
+end, {})
+
+---------treesitter--------------------------------
+require'nvim-treesitter'.setup ()
+require'nvim-treesitter'.install ({
+	'bash',
+	'lau',
+	'python',
+	'nim',
+	'zig',
+	'c',
+	'vim',
+	'markdown',
+	'query',
+	'go',
+	'html',
+	'css',
+	'javascript',
+	'csv',
+	'dot',
+	'gitcommit',
+	'git_rebase',
+	'gomod',
+	'gosum',
+	'json',
+	'json5',
+	'jq',
+	'jinja',
+	'latex',
+	'requirements',
+	'rust',
+	'sql',
+	'ssh_config',
+	'xml',
+	'toml',
+	'yaml'
+})
 
 -------end-treesitter------------------------------
 
@@ -164,23 +214,25 @@ require('smokinq')
 
 require('comment').setup({
 	languages = {
-		sh = "#",
-		zsh = "#",
-		bash = "#",
-		nim = "#",
-		zig = "//",
-		conf = "#",
-		dockerfile = "#",
-		rust = "//",
-		go = "//",
-		hyprlang = "#",
+		sh         = { "#",  nil },
+		ghostty    = { "#",   nil },
+		zsh        = { "#",  nil },
+		bash       = { "#",  nil },
+		nim        = { "#",  nil },
+		zig        = { "//", nil },
+		conf       = { "#",  nil },
+		dockerfile = { "#",  nil },
+		hyprlang   = { "#",  nil },
+		rust       = { "//", { "/*", "*/" } },
+		go         = { "//", { "/*", "*/" } },
+		javascript = { "//", { "/*", "*/" } },
+		css        = { nil,  { "/*", "*/" } },
 	},
 })
 
 require('colorizer').setup()
 
 require'alpha'.setup(require'alpha.themes.startify'.config)
--- require('copilot.vim').setup()
 
 -----------cursor-tree--------------------------------
 vim.opt.cursorline = true
@@ -225,26 +277,6 @@ vim.api.nvim_set_hl(0, "HopNextKey1", {fg = "#61c1d3"})
 vim.api.nvim_set_hl(0, "HopNextKey2", {fg = "#076678"})
 
 map('F',':HopWord<CR>')
-
-
------------vimtex--------------------------------
-
--- vim.g.vimtex_view_method = 'sioyek'
--- vim.g.vimtex_view_sioyek_exe = '/sbin/sioyek'
--- vim.g.vimtex_view_sioyek_options = '--reuse-window'
--- 
--- vim.g.vimtex_compiler_latexmk = {
---   options = {
---     "-interaction=nonstopmode",
---     "-file-line-error",
---     "-halt-on-error",
---     "-silent", -- suppress most warnings
---   },
--- }
--- 
--- vim.keymap.set('n', '<leader>ll', '<cmd>VimtexCompile<CR>', { desc = "VimTeX Compile" })
--- vim.keymap.set('n', '<leader>lv', '<cmd>VimtexView<CR>', { desc = "VimTeX View" })
--- 
 
 -----------Fterm--------------------------------
 
